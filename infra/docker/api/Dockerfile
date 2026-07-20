@@ -18,5 +18,6 @@ RUN apk add --no-cache \
         -e 's!^user = www-data!user = app!' \
         -e 's!^group = www-data!group = app!' \
         /usr/local/etc/php-fpm.d/www.conf
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/api
