@@ -89,7 +89,7 @@ eventhub/
 ├── infra/
 │   ├── nginx/
 │   └── docker/
-├── docker-compose.yml
+├── compose.yaml
 └── README.md
 ```
 
