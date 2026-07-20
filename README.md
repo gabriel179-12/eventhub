@@ -36,7 +36,7 @@ flowchart LR
 | Camada | Tecnologias |
 |---|---|
 | Front-end | React, TypeScript, Vite, Material UI, React Router, React Hook Form, Zod, TanStack Query, Axios |
-| Back-end | Laravel 12, PHP 8.4, Laravel Sanctum, Pest, Swagger/OpenAPI |
+| Back-end | Laravel 13, PHP 8.4, Laravel Sanctum, Pest, Swagger/OpenAPI |
 | Banco de dados | PostgreSQL |
 | Desenvolvimento | Docker, Docker Compose, Nginx, Mailpit e DBeaver |
 | Evolução | Redis, AWS S3, GitHub Actions, WebSockets, RabbitMQ opcional |
