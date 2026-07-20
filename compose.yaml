@@ -28,6 +28,15 @@ services:
         APP_GID: ${LOCAL_GID}
     container_name: eventhub-api
     working_dir: /var/www/api
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./apps/api:/var/www/api
     depends_on:
