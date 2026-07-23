@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\HealthCheckController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-Route::get('/v1/health', HealthCheckController::class);
+Route::prefix('v1')->group(function (): void {
+    Route::get('/health', HealthCheckController::class);
+    Route::post('/auth/register', RegisterController::class);
+});
