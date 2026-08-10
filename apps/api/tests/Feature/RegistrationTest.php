@@ -3,17 +3,21 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Database\Seeders\RoleSeeder;
 
 uses(RefreshDatabase::class);
 
 test('a visitor can register', function (): void{
     $password = 'Password123!';
+    
+    $this->seed(RoleSeeder::class);
 
     $response = $this->postJson('/api/v1/auth/register', [
         'name' => 'Gabriel Souza',
         'email' => 'gabriel@example.com',
         'password' => $password,
         'password_confirmation' => $password,
+        
     ]);
 
     $response
@@ -27,6 +31,9 @@ test('a visitor can register', function (): void{
         ->firstOrFail();
     
     expect(Hash::check($password, $user->password))->toBeTrue();
+
+    expect($user->roles()->pluck('name')->all())
+    ->toContain('participant');
 });
 
 test('a visitor cannot register with an email already in use', function (): void {
