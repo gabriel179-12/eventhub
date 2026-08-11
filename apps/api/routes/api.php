@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\AuthenticatedUserController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\CreateOrganizerController;
+use App\Http\Controllers\Api\V1\ListMyOrganizersController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -17,5 +18,7 @@ Route::prefix('v1')->group(function (): void {
         ->middleware('auth:sanctum');
     Route::post('/auth/register', RegisterController::class);
     Route::post('/organizers', CreateOrganizerController::class)
+        ->middleware('auth:sanctum');
+    Route::get('/organizers', ListMyOrganizersController::class)
         ->middleware('auth:sanctum');
 });

@@ -17,6 +17,10 @@ final class OrganizerResource extends JsonResource
             'logo_path'=>$this->logo_path,
             'banner_path'=>$this->banner_path,
             'social_links'=>$this->social_links,
+            'membership_role'=>$this->whenPivotLoaded(
+                'organizer_users',
+                fn (): string => $this->pivot->role,
+            ),
             'created_at'=>$this->created_at?->toISOString(),
             'updated_at'=>$this->updated_at?->toISOString(),
         ];
