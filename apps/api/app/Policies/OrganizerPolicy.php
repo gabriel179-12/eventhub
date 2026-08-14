@@ -15,4 +15,9 @@ final class OrganizerPolicy
             ->wherePivot('role', 'owner')
             ->exists();
     }
+
+    public function update(User $user, Organizer $organizer): bool
+    {
+        return $this->manageTeam($user, $organizer);
+    }
 }
