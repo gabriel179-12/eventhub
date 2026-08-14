@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Organizer extends Model
 {
@@ -29,4 +30,9 @@ class Organizer extends Model
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    public function events(): HasMany {
+        return $this->hasMany(Event::class);
+    }
+    
 }
