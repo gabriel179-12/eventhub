@@ -26,13 +26,23 @@ class Event extends Model
         'is_private',
     ];
 
-    protected function organizer(): BelongsTo {
+    public function organizer(): BelongsTo
+    {
         return $this->belongsTo(Organizer::class);
     }
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function casts(): array
+    {
+        return[
+            'starts_at' => 'datetime',
+            'ends_at' => 'datetime',
+            'is_private' => 'boolean',
+        ];
     }
     
 }

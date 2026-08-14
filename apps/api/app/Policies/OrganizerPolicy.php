@@ -20,4 +20,12 @@ final class OrganizerPolicy
     {
         return $this->manageTeam($user, $organizer);
     }
+
+    public function createEvent(User $user, Organizer $organizer): bool
+    {
+        return $organizer->users()
+        ->where('users.id', $user->id)
+        ->wherePivotIn('role', ['owner', 'manager'])
+        ->exists();
+    }
 }
