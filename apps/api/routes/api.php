@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CreateEventController;
 use App\Http\Controllers\Api\V1\PublishEventController;
 use App\Http\Controllers\Api\V1\ListPublicEventsController;
+use App\Http\Controllers\Api\V1\ListPublicCategoriesController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -48,4 +49,5 @@ Route::prefix('v1')->group(function (): void {
         '/events/{slug}',
         ShowPublicEventController::class
     );
+    Route::get('/categories', ListPublicCategoriesController::class);
 });
