@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\AddOrganizerMemberController;
 use App\Http\Controllers\Api\V1\ListMyOrganizersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CreateEventController;
+use App\Http\Controllers\Api\V1\PublishEventController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -36,4 +37,8 @@ Route::prefix('v1')->group(function (): void {
         '/organizers/{organizer:slug}/events',
         CreateEventController::class,
     )->middleware('auth:sanctum');
+    Route::patch(
+        '/organizers/{organizer:slug}/events/{event:slug}/publish',
+        PublishEventController::class,
+    )->middleware('auth:sanctum')->scopeBindings();
 });
