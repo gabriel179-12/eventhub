@@ -12,9 +12,7 @@ class ListPublicEventsController extends Controller
     public function __invoke(): AnonymousResourceCollection
     {
         $events = Event::query()
-            ->where('status', 'published')
-            ->where('is_private', false)
-            ->where('starts_at', '>=', now())
+            ->publicUpcoming()
             ->orderBy('starts_at')
             ->get();
 

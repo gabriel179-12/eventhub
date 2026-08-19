@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Builder;
 
 class Event extends Model
 {
@@ -43,6 +43,14 @@ class Event extends Model
             'ends_at' => 'datetime',
             'is_private' => 'boolean',
         ];
+    }
+
+    public function scopePublicUpcoming(Builder $query): Builder
+    {
+        return $query
+            ->where('status', 'published')
+            ->where('is_private', false)
+            ->where('starts_at', '>=', now());
     }
     
 }

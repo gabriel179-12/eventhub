@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\AuthenticatedUserController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\CreateOrganizerController;
+use App\Http\Controllers\Api\V1\ShowPublicEventController;
 use App\Http\Controllers\Api\V1\UpdateOrganizerController;
 use App\Http\Controllers\Api\V1\AddOrganizerMemberController;
 use App\Http\Controllers\Api\V1\ListMyOrganizersController;
@@ -43,4 +44,8 @@ Route::prefix('v1')->group(function (): void {
         PublishEventController::class,
     )->middleware('auth:sanctum')->scopeBindings();
     Route::get('/events', ListPublicEventsController::class);
+    Route::get(
+        '/events/{slug}',
+        ShowPublicEventController::class
+    );
 });

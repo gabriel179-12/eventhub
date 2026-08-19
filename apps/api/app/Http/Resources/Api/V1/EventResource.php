@@ -13,6 +13,21 @@ final class EventResource extends JsonResource
             'id' => $this->id,
             'organizer_id' => $this->organizer_id,
             'category_id' => $this->category_id,
+            'organizer'=> $this->whenLoaded('organizer', function (): array{
+                return[
+                    'id' => $this->organizer->id,
+                    'name' => $this->organizer->name,
+                    'slug' => $this->organizer->slug,
+                    'logo_path' => $this->organizer->logo_path,
+                ];
+            }),
+            'category' => $this->whenLoaded('category', function (): array{
+                return[
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
+                    'slug' => $this->category->slug,
+                ];
+            }),
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
