@@ -12,7 +12,13 @@ final class ShowPublicEventController extends Controller
     {
         $event = Event::query()
             ->publicUpcoming()
-            ->with(['organizer', 'category'])
+            ->with([
+                'organizer',
+                'category',
+                'ticketTypes' => fn ($query) => $query
+                    ->availableForSale()
+                    ->orderBy('price_in_cents'),
+            ])
             ->where('slug', $slug)
             ->firstOrFail();
 

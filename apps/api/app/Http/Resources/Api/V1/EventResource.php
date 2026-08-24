@@ -28,6 +28,9 @@ final class EventResource extends JsonResource
                     'slug' => $this->category->slug,
                 ];
             }),
+            'ticket_types' => TicketTypeResource::collection(
+                $this->whenLoaded('ticketTypes'),
+            ),
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
