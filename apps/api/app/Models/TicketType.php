@@ -25,6 +25,7 @@ class TicketType extends Model
             'sales_starts_at' => 'datetime',
             'sales_ends_at' => 'datetime',
             'is_active' => 'boolean',
+            'quantity_reserved' => 'integer',
         ];
     }
 
