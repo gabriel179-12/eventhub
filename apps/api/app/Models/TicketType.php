@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TicketType extends Model
 {
@@ -46,5 +47,10 @@ class TicketType extends Model
                 $query->whereNull('sales_ends_at')
                     ->orWhere('sales_ends_at', '>', $now);
             });
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }
