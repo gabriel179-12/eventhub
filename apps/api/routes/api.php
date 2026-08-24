@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\CreateEventController;
 use App\Http\Controllers\Api\V1\PublishEventController;
 use App\Http\Controllers\Api\V1\ListPublicEventsController;
 use App\Http\Controllers\Api\V1\ListPublicCategoriesController;
+use App\Http\Controllers\Api\V1\CreateTicketTypeController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -50,4 +51,8 @@ Route::prefix('v1')->group(function (): void {
         ShowPublicEventController::class
     );
     Route::get('/categories', ListPublicCategoriesController::class);
+    Route::post(
+        '/organizers/{organizer:slug}/events/{event:slug}/ticket-types',
+        CreateTicketTypeController::class,
+    )->middleware('auth:sanctum')->scopeBindings();
 });

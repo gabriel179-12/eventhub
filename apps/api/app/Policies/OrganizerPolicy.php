@@ -41,4 +41,16 @@ final class OrganizerPolicy
                 ->wherePivotIn('role', ['owner', 'manager'])
                 ->exists();
     }
+
+    public function manageTicketTypes(
+        User $user,
+        Organizer $organizer,
+        Event $event,
+    ): bool {
+        return $event->organizer_id === $organizer->id
+            && $organizer->users()
+                ->where('users.id', $user->id)
+                ->wherePivotIn('role', ['owner', 'manager'])
+                ->exists();
+    }
 }
