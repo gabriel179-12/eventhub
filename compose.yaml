@@ -45,6 +45,32 @@ services:
       postgres:
         condition: service_healthy
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: infra/docker/api/Dockerfile
+      args:
+        APP_UID: ${LOCAL_UID}
+        APP_GID: ${LOCAL_GID}
+    container_name: eventhub-scheduler
+    working_dir: /var/www/api
+    command: php artisan schedule:work
+    user: app
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./apps/api:/var/www/api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
   nginx:
     image: nginx:1.28-alpine
     container_name: eventhub-nginx
