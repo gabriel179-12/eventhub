@@ -12,7 +12,7 @@ class Order extends Model
     protected $fillable = [
         'status',
         'total_in_cents',
-        'expired_at',
+        'expires_at',
         'paid_at',
     ];
 

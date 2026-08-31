@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\ListPublicEventsController;
 use App\Http\Controllers\Api\V1\ListPublicCategoriesController;
 use App\Http\Controllers\Api\V1\CreateTicketTypeController;
 use App\Http\Controllers\Api\V1\CreateOrderController;
+use App\Http\Controllers\Api\V1\PayOrderController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -59,5 +60,9 @@ Route::prefix('v1')->group(function (): void {
     Route::post(
         '/events/{event:slug}/orders',
         CreateOrderController::class,
+    )->middleware('auth:sanctum');
+    Route::patch(
+        '/orders/{order:code}/pay',
+        PayOrderController::class,
     )->middleware('auth:sanctum');
 });
