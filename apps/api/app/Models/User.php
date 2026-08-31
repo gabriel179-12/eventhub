@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function checkedInTickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'checked_in_by');
+    }
 }
