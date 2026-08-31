@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use App\Models\Ticket;
 
 uses(RefreshDatabase::class);
 
@@ -85,6 +86,17 @@ test('a user can pay their pending order', function (): void {
     expect($order->fresh()->paid_at)->not->toBeNull();
     expect($ticketType->fresh()->quantity_reserved)->toBe(0);
     expect($ticketType->fresh()->quantity_sold)->toBe(2);
+
+    $orderItem = $order->items()->firstOrFail();
+
+    $tickets = Ticket::query()
+        ->where('order_item_id', $orderItem->id)
+        ->orderBy('id')
+        ->get();
+    expect($tickets)->toHaveCount(2);
+    expect($tickets->pluck('status')->all())->toBe(['valid', 'valid']);
+    expect($tickets->first()->code)
+        ->not->toBe($tickets->last()->code);
 });
 
 test('a user cannot pay another users order', function (): void {

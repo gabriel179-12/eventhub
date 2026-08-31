@@ -5,6 +5,7 @@ namespace App\Domains\Orders\Actions;
 use App\Models\Order;
 use App\Models\TicketType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 final class PayOrder
 {
@@ -46,6 +47,13 @@ final class PayOrder
                 $ticketType = $ticketTypes->get($item->ticket_type_id);
                 $ticketType->decrement('quantity_reserved', $item->quantity);
                 $ticketType->increment('quantity_sold', $item->quantity);
+
+                for ($index = 0; $index < $item->quantity; $index++){
+                    $item->tickets()->create([
+                        'code' => Str::uuid()->toString(),
+                        'status' => 'valid',
+                    ]);
+                }
             }
 
             $order->status = 'paid';
