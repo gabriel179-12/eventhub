@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\V1\CreateTicketTypeController;
 use App\Http\Controllers\Api\V1\CreateOrderController;
 use App\Http\Controllers\Api\V1\PayOrderController;
 use App\Http\Controllers\Api\V1\ListMyTicketsController;
+use App\Http\Controllers\Api\V1\CheckInTicketController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -70,4 +71,8 @@ Route::prefix('v1')->group(function (): void {
         '/me/tickets',
         ListMyTicketsController::class,
     )->middleware('auth:sanctum');
+    Route::post(
+        'organizers/{organizer:slug}/events/{event:slug}/check-ins',
+        CheckInTicketController::class,
+    )->middleware('auth:sanctum')->scopeBindings();
 });

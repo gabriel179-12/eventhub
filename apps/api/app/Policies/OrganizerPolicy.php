@@ -53,4 +53,15 @@ final class OrganizerPolicy
                 ->wherePivotIn('role', ['owner', 'manager'])
                 ->exists();
     }
+
+    public function checkIn(User $user, Organizer $organizer): bool{
+        return $organizer->users()
+            ->where('users.id', $user->id)
+            ->wherePivotIn('role', [
+                'owner',
+                'manager',
+                'checkin_staff',
+            ])
+        ->exists();
+    }
 }
