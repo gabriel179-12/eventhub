@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\ListPublicCategoriesController;
 use App\Http\Controllers\Api\V1\CreateTicketTypeController;
 use App\Http\Controllers\Api\V1\CreateOrderController;
 use App\Http\Controllers\Api\V1\PayOrderController;
+use App\Http\Controllers\Api\V1\ListMyTicketsController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', HealthCheckController::class);
@@ -64,5 +65,9 @@ Route::prefix('v1')->group(function (): void {
     Route::patch(
         '/orders/{order:code}/pay',
         PayOrderController::class,
+    )->middleware('auth:sanctum');
+    Route::get(
+        '/me/tickets',
+        ListMyTicketsController::class,
     )->middleware('auth:sanctum');
 });

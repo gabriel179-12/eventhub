@@ -15,7 +15,7 @@ class Ticket extends Model
     protected function casts(): array
     {
         return [
-            'check_in_at' => 'datetinme',
+            'checked_in_at' => 'datetime',
         ];
     }
 
