@@ -174,3 +174,39 @@ test('an event from another organizer cannot receive a ticket type through this 
         ticketTypePayload(),
     )->assertNotFound();
 });
+
+test('an event cannot receive a second ticket type', function (string $role): void {
+    $user = User::factory()->create();
+
+    $organizer = Organizer::query()->create([
+        'name' => 'EventHub Produções',
+        'slug' => 'eventhub-producoes',
+    ]);
+
+    $event = eventForTicketTypeCreation($organizer);
+
+    $organizer->users()->attach($user->id, [
+        'role' => $role,
+    ]);
+
+    $originalTicket = $event->ticketTypes()->create([
+        'name' => 'Ingresso',
+        'price_in_cents' => 8000,
+        'quantity' => 500,
+    ]);
+
+    Sanctum::actingAs($user);
+
+    $this->postJson(
+        "/api/v1/organizers/{$organizer->slug}/events/{$event->slug}/ticket-types",
+        ticketTypePayload([
+            'name' => 'Outro ingresso',
+            'price_in_cents' => 12000,
+        ]),
+    )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['event']);
+
+    expect($event->ticketTypes()->count())->toBe(1);
+    expect($originalTicket->fresh()->price_in_cents)->toBe(8000);
+})->with(['owner', 'manager']);

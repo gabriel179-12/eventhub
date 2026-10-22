@@ -4,6 +4,7 @@ namespace App\Domains\Events\Actions;
 
 use App\Models\Event;
 use App\Models\Organizer;
+use Illuminate\Support\Facades\DB;
 
 final class CreateEvent
 {
@@ -22,32 +23,40 @@ final class CreateEvent
      *     postal_code: string,
      *     latitude?: float|null,
      *     longitude?: float|null,
-     *     capacity?: int|null,
+     *     capacity: int,
+     *     price_in_cents: int,
      *     is_private?: bool
      * } $attributes
      */
     public function handle(Organizer $organizer, array $attributes): Event
     {
-        $event = $organizer->events()->create([
-            'category_id' => $attributes['category_id'],
-            'name' => $attributes['name'],
-            'slug' => $attributes['slug'],
-            'description' => $attributes['description'],
-            'starts_at' => $attributes['starts_at'],
-            'ends_at' => $attributes['ends_at'] ?? null,
-            'venue_name' => $attributes['venue_name'],
-            'address_line' => $attributes['address_line'],
-            'city' => $attributes['city'],
-            'state' => $attributes['state'],
-            'postal_code' => $attributes['postal_code'],
-            'latitude' => $attributes['latitude'] ?? null,
-            'longitude' => $attributes['longitude'] ?? null,
-            'capacity' => $attributes['capacity'] ?? null,
-            'is_private' => $attributes['is_private'] ?? false,
-            'status' => 'draft',
-            'is_private' => $attributes['is_private'] ?? false,
-        ]);
+        return DB::transaction(function () use ($organizer, $attributes): Event {
+            $event = $organizer->events()->create([
+                'category_id' => $attributes['category_id'],
+                'name' => $attributes['name'],
+                'slug' => $attributes['slug'],
+                'description' => $attributes['description'],
+                'starts_at' => $attributes['starts_at'],
+                'ends_at' => $attributes['ends_at'] ?? null,
+                'venue_name' => $attributes['venue_name'],
+                'address_line' => $attributes['address_line'],
+                'city' => $attributes['city'],
+                'state' => $attributes['state'],
+                'postal_code' => $attributes['postal_code'],
+                'latitude' => $attributes['latitude'] ?? null,
+                'longitude' => $attributes['longitude'] ?? null,
+                'capacity' => $attributes['capacity'],
+                'is_private' => $attributes['is_private'] ?? false,
+            ]);
 
-        return $event->refresh();
+            $event->ticketTypes()->create([
+                'name' => 'Ingresso',
+                'price_in_cents' => $attributes['price_in_cents'],
+                'quantity' => $attributes['capacity'],
+                'is_active' => true,
+            ]);
+
+            return $event->refresh();
+        });
     }
 }

@@ -38,7 +38,8 @@ final class StoreEventRequest extends FormRequest
             'postal_code' => ['required', 'string', 'regex:/^\d{5}-?\d{3}$/'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
-            'capacity' => ['nullable', 'integer', 'min:1'],
+            'capacity' => ['required', 'integer', 'min:1', 'max:2147483647'],
+            'price_in_cents' => ['required', 'integer', 'min:0', 'max:2147483647'],
             'is_private' => ['sometimes', 'boolean'],
         ];
     }

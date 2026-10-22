@@ -24,6 +24,7 @@ function validEventPayload(int $categoryId, array $overrides = []): array
         'state' => 'SP',
         'postal_code' => '01000-000',
         'capacity' => 500,
+        'price_in_cents' => 8000,
         'is_private' => false,
     ], $overrides);
 }
@@ -62,6 +63,18 @@ test('an owner or manager can create an event', function (string $membershipRole
     expect($event->organizer_id)->toBe($organizer->id);
     expect($event->category_id)->toBe($category->id);
     expect($event->status)->toBe('draft');
+
+    $ticketTypes = $event->ticketTypes()->get();
+
+    expect($ticketTypes)->toHaveCount(1);
+
+    $ticketTypes = $ticketTypes->first();
+
+    expect($ticketTypes->name)->toBe('Ingresso');
+    expect($ticketTypes->price_in_cents)->toBe(8000);
+    expect($ticketTypes->quantity)->toBe(500);
+    expect($ticketTypes->quantity_sold)->toBe(0);
+    expect($ticketTypes->quantity_reserved)->toBe(0);
 })->with(['owner', 'manager']);
 
 test('checkin staff cannot create an event', function (): void {
